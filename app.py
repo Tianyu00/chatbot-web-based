@@ -141,7 +141,8 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
         print(1)
         json['bot_message'] = response(B, json['message'])
         B = json['bot_message']
-        db.execute("INSERT INTO conversations ( input, response) VALUES ('" + str(json['message']) + "','" + str(json['bot_message']) +"')")
+        if json['message']:
+            db.execute("INSERT INTO conversations ( input, response) VALUES ('" + str(json['message']) + "','" + str(json['bot_message']) +"')")
         print(2)
     except:
         pass
