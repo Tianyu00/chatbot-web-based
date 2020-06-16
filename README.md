@@ -4,6 +4,7 @@
 
 You can talk to the chatbot here: [https://chatbot-postgres.herokuapp.com](https://chatbot-postgres.herokuapp.com)
 
+This chatbot utilizes PostgreSQL. Another version using sqlite can be found [here](https://github.com/Tianyu00/chatbot_sqlite).
 
 
 Reference:
