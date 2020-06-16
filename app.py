@@ -148,7 +148,8 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
         pass
     print(json)
     # db.execute('DROP TABLE results2')
-    socketio.to(json['user']).emit('my response', json, callback=messageReceived)
+    # socketio.to(json['user']).emit('my response', json, callback=messageReceived)
+    socketio.emit('my response', json, callback=messageReceived)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
