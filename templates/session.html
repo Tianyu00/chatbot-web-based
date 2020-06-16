@@ -20,7 +20,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     <script type="text/javascript">
       var socket = io.connect('https://' + document.domain + ':' + location.port);
-
+//       var people = {};
+      
+      
       socket.on( 'connect', function() {
         socket.emit( 'my event', {
           data: 'User Connected'
@@ -29,9 +31,11 @@
           e.preventDefault()
           let user_name = $( 'input.username' ).val()
           let user_input = $( 'input.message' ).val()
+//           people[user_name]=socket.id;
           socket.emit( 'my event', {
             user_name : user_name,
             message : user_input,
+            user: socket.id
             // bot_message : response()
           } )
           $( 'input.message' ).val( '' ).focus()
