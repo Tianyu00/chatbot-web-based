@@ -94,7 +94,7 @@ def response(B,H):
     print('cp1')
     print('SELECT sentence_id, sentence, SUM(weight) AS sum_weight FROM results GROUP BY sentence_id ORDER BY sum_weight DESC LIMIT 1')
     try:
-        r = db.execute('SELECT sentence_id, sentence, SUM(weight) AS sum_weight FROM results GROUP BY sentence_id ORDER BY sum_weight DESC LIMIT 1')
+        r = db.execute('SELECT sentence_id, sentence, SUM(weight) AS sum_weight FROM results GROUP BY sentence_id, sentence ORDER BY sum_weight DESC LIMIT 1')
         print(0)
         print(r)
     except:
