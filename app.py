@@ -63,6 +63,8 @@ B = 'Hello!'
 def response(B,H):
     if H == '':
         return ''
+
+    # finding the sentence having the largest 'association' with the input sentence
     try: db.execute('DROP TABLE results')
     except: pass
     db.execute('CREATE TABLE results(sentence_id INT, sentence TEXT, weight REAL)')
@@ -70,13 +72,9 @@ def response(B,H):
     words_length = sum([n * len(word) for word, n in words])
     for word, n in words:
         weight = sqrt(n / float(words_length))
-        print("select * FROM words INNER JOIN associations ON associations.word_id=words.id INNER JOIN sentences ON sentences.id=associations.sentence_id WHERE words.word='"+ word+"'")
-        r = db.execute("select * FROM words INNER JOIN associations ON associations.word_id=words.id INNER JOIN sentences ON sentences.id=associations.sentence_id WHERE words.word='"+ word+"'")
-        for ri in r:
-            print(ri)
         db.execute('INSERT INTO results SELECT associations.sentence_id, sentences.sentence, '+str(weight)+"*associations.weight/(4+sentences.used) AS weight FROM words INNER JOIN associations ON associations.word_id=words.id INNER JOIN sentences ON sentences.id=associations.sentence_id WHERE words.word='"+ word+"'")
+    
     # if matches were found, give the best one
-    print('SELECT sentence_id, sentence, SUM(weight) AS sum_weight FROM results GROUP BY sentence_id ORDER BY sum_weight DESC LIMIT 1')
     try:
         r = db.execute('SELECT sentence_id, sentence, SUM(weight) AS sum_weight FROM results GROUP BY sentence_id, sentence ORDER BY sum_weight DESC LIMIT 1')
     except:
@@ -86,6 +84,7 @@ def response(B,H):
         break
     db.execute("UPDATE sentences SET used=used+1 WHERE id='"+str(r[0])+"'")
     
+    # add association into database
     words = get_words(B)
     words_length = sum([n * len(word) for word, n in words])
     sentence_id = get_id('sentence', H)
