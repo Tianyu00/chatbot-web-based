@@ -74,16 +74,7 @@ B = 'Hello!'
 def response(B,H):
     if H == '':
         return ''
-    words = get_words(B)
-    words_length = sum([n * len(word) for word, n in words])
-    print('cp3')
-    sentence_id = get_id('sentence', H)
-    print('cp7')
-    for word, n in words:
-        word_id = get_id('word', word)
-        weight = sqrt(n / float(words_length))
-        print("INSERT INTO associations (word_id, sentence_id, weight) VALUES ('" +str(word_id)+ "', '"+str(sentence_id)+ "', '" +str(weight)+ "')")
-        db.execute("INSERT INTO associations (word_id, sentence_id, weight) VALUES ('" +str(word_id)+ "', '"+str(sentence_id)+ "', '" +str(weight)+ "')")
+
     print('cp4')
     try: db.execute('DROP TABLE results')
     except: pass
@@ -120,6 +111,18 @@ def response(B,H):
     print('output')
     print(r[0])
     print(r[1])
+
+    words = get_words(B)
+    words_length = sum([n * len(word) for word, n in words])
+    print('cp3')
+    sentence_id = get_id('sentence', H)
+    print('cp7')
+    for word, n in words:
+        word_id = get_id('word', word)
+        weight = sqrt(n / float(words_length))
+        print("INSERT INTO associations (word_id, sentence_id, weight) VALUES ('" +str(word_id)+ "', '"+str(sentence_id)+ "', '" +str(weight)+ "')")
+        db.execute("INSERT INTO associations (word_id, sentence_id, weight) VALUES ('" +str(word_id)+ "', '"+str(sentence_id)+ "', '" +str(weight)+ "')")
+
     return r[1]
 
 
