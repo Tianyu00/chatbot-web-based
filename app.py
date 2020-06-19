@@ -75,13 +75,15 @@ def response(B,H):
         db.execute('INSERT INTO results SELECT associations.sentence_id, sentences.sentence, '+str(weight)+"*associations.weight/(4+sentences.used) AS weight FROM words INNER JOIN associations ON associations.word_id=words.id INNER JOIN sentences ON sentences.id=associations.sentence_id WHERE words.word='"+ word+"'")
     
     # if matches were found, give the best one
-    try:
-        r = db.execute('SELECT sentence_id, sentence, SUM(weight) AS sum_weight FROM results GROUP BY sentence_id, sentence ORDER BY sum_weight DESC LIMIT 1')
-    except:
-        r = db.execute('SELECT id, sentence FROM sentences WHERE used = (SELECT MIN(used) FROM sentences) ORDER BY RANDOM() LIMIT 1')
+    r = db.execute('SELECT sentence_id, sentence, SUM(weight) AS sum_weight FROM results GROUP BY sentence_id, sentence ORDER BY sum_weight DESC LIMIT 1')
     for ri in r:
         r = ri
         break
+    if not isinstance(r[0],int):
+        r = db.execute('SELECT id, sentence FROM sentences WHERE used = (SELECT MIN(used) FROM sentences) ORDER BY RANDOM() LIMIT 1')
+        for ri in r:
+            r = ri
+            break
     db.execute("UPDATE sentences SET used=used+1 WHERE id='"+str(r[0])+"'")
     
     # add association into database
